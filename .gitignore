@@ -1,3 +1,16 @@
+# ─────────────────────────────────────────────
+# 보안: 데이터 파일은 어떤 경우에도 저장소에 올리지 않는다
+# (기업 매출/매입/자금 정보 노출 방지)
+# ─────────────────────────────────────────────
+*.xlsx
+*.xlsm
+*.xls
+*.xltx
+*.xlsb
+*.csv
+*.tsv
+data/
+
 # Excel 임시/잠금 파일
 ~$*
 *.tmp
@@ -6,8 +19,11 @@
 Thumbs.db
 .DS_Store
 
-# Node (대시보드 개발 시)
+# Node / Next.js
 node_modules/
 .next/
+out/
 .vercel/
 .env*.local
+*.tsbuildinfo
+next-env.d.ts
