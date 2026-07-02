@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react";
 import CashView from "@/components/CashView";
+import EditView from "@/components/EditView";
 import FileDropzone from "@/components/FileDropzone";
 import Overview from "@/components/Overview";
 import ProjectsView from "@/components/ProjectsView";
 import PurchasesView from "@/components/PurchasesView";
 import SalesView from "@/components/SalesView";
+import { downloadExcel } from "@/lib/export";
 import { clearData, loadData, saveData } from "@/lib/storage";
 import type { DashboardData, ParseResult } from "@/lib/types";
 
-const TABS = ["개요", "매출", "매입", "프로젝트", "자금"] as const;
+const TABS = ["개요", "매출", "매입", "프로젝트", "자금", "입력·편집"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function Page() {
@@ -28,6 +30,11 @@ export default function Page() {
     setData(result.data);
     setWarnings(result.warnings);
     saveData(result.data);
+  };
+
+  const onDataChange = (d: DashboardData) => {
+    setData(d);
+    saveData(d);
   };
 
   const onClear = () => {
@@ -51,6 +58,12 @@ export default function Page() {
             <span>
               📄 {data.fileName} · {new Date(data.loadedAt).toLocaleString("ko-KR")} 기준
             </span>
+            <button
+              onClick={() => downloadExcel(data)}
+              className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-500"
+            >
+              엑셀 다운로드
+            </button>
             <FileDropzone onLoaded={onLoaded} compact />
             <button
               onClick={onClear}
@@ -93,6 +106,7 @@ export default function Page() {
           {tab === "매입" && <PurchasesView data={data} />}
           {tab === "프로젝트" && <ProjectsView data={data} />}
           {tab === "자금" && <CashView data={data} />}
+          {tab === "입력·편집" && <EditView data={data} onChange={onDataChange} />}
 
           <footer className="mt-8 text-center text-xs text-slate-400">
             🔒 모든 데이터는 이 브라우저에서만 처리됩니다 — 서버 전송·외부 저장 없음
