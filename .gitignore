@@ -1,0 +1,13 @@
+# Excel 임시/잠금 파일
+~$*
+*.tmp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Node (대시보드 개발 시)
+node_modules/
+.next/
+.vercel/
+.env*.local
